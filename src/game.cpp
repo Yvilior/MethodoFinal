@@ -1,4 +1,5 @@
 #include "game.h"
+#include "entity.h"
 #include <cstdlib>
 
 GameApp::GameApp ()
@@ -13,10 +14,15 @@ GameApp::GameApp ()
 	Renderer = SDL_CreateRenderer (Window, nullptr);
 	if (Renderer == nullptr)
 		abort ();
+
+	entities.push_back(new GridEntity());
 }
 
 GameApp::~GameApp ()
 {
+	for (auto e : entities)
+		delete e;
+
 	SDL_DestroyRenderer (Renderer);
 	SDL_DestroyWindow (Window);
 	SDL_Quit ();

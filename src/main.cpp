@@ -1,5 +1,7 @@
-#include <SDL3/SDL.h>
+#include "entity.h"
+
 #include "game.h"
+#include <SDL3/SDL.h>
 
 Sint32
 main (int argc, char *argv[])
@@ -18,6 +20,10 @@ main (int argc, char *argv[])
 
 			SDL_SetRenderDrawColor (app->Renderer, 12, 12, 44, 255);
 			SDL_RenderClear (app->Renderer);
+
+			for (auto* e : app->entities)
+				if (auto* d = dynamic_cast<Drawable*>(e))
+					d->Draw(app);
 
 			SDL_RenderPresent (app->Renderer);
 		}
