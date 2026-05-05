@@ -2,28 +2,38 @@
 #include "entity.h"
 #include <cstdlib>
 
-GameApp::GameApp ()
+GameApp::GameApp()
 {
-	if (SDL_Init (SDL_INIT_VIDEO) == false)
-		abort ();
+	if (SDL_Init(SDL_INIT_VIDEO) == false)
+		abort();
 
-	Window = SDL_CreateWindow ("Guillon Yvain Exam Final", 800, 600, 0);
+	if (TTF_Init() == false)
+		abort();
+
+	Window = SDL_CreateWindow("Yvain Guillon", 800, 600, 0);
 	if (Window == nullptr)
-		abort ();
+		abort();
 
-	Renderer = SDL_CreateRenderer (Window, nullptr);
+	Renderer = SDL_CreateRenderer(Window, nullptr);
 	if (Renderer == nullptr)
-		abort ();
+		abort();
+
+	font = TTF_OpenFont("C:/Windows/Fonts/arial.ttf", 16);
+	if (font == nullptr)
+		abort();
 
 	entities.push_back(new GridEntity());
 }
 
-GameApp::~GameApp ()
+GameApp::~GameApp()
 {
 	for (auto e : entities)
 		delete e;
 
-	SDL_DestroyRenderer (Renderer);
-	SDL_DestroyWindow (Window);
-	SDL_Quit ();
+	TTF_CloseFont(font);
+	TTF_Quit();
+
+	SDL_DestroyRenderer(Renderer);
+	SDL_DestroyWindow(Window);
+	SDL_Quit();
 }
