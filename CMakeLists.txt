@@ -4,11 +4,11 @@ project(420J12_Midterm)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(${PROJECT_NAME}
-			   src/main.cpp
-			   src/entity.cpp
 		src/main.cpp
 		src/Component.cpp
 		src/Component.h
+		src/entity.cpp
+		src/entity.h
 		src/game.cpp
 		src/game.h
 		# Si vous ajoutez d'autres fichiers .cpp, il faut les lister ici:
