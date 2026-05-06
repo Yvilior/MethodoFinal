@@ -1,11 +1,6 @@
 #include "entity.h"
-
-Entity::~Entity() = default;
-Flower::Flower() = default;
-Seed::Seed() = default;
-
-void Entity::Update(GameApp *app) {}
-
+#include "game.h"
+// par ia
 void DrawCircle(SDL_Renderer* renderer, int cx, int cy, int radius)
 {
 	for (int w = 0; w < radius * 2; w++)
@@ -20,43 +15,68 @@ void DrawCircle(SDL_Renderer* renderer, int cx, int cy, int radius)
 				}
 		}
 }
-
-GridEntity::GridEntity()
+// par Yvain
+Entity::~Entity()
 {
-	for (int y = 0; y < 5; y++)
-		for (int x = 0; x < 5; x++)
-			grid[y][x] = 0;
+	for (auto c : components)
+		delete c;
 }
-
-void Flower::Draw(GameApp* app)
+//par Yvain
+void Entity::Update(GameApp* app)
 {
-	SDL_SetRenderDrawColor(app->Renderer, 34, 85, 34, 255);
-	DrawCircle(app->Renderer, (int)x, (int)y, (int)radius);
+	for (auto c : components)
+		c->Update(app);
 }
-
-void Seed::Draw(GameApp* app)
+// par Yvain
+void Entity::Render(GameApp* app)
 {
-	SDL_SetRenderDrawColor(app->Renderer, 0, 100, 0, 255);
-	DrawCircle(app->Renderer, (int)x, (int)y, (int)radius);
+	for (auto c : components)
+		c->Render(app);
 }
-
-void GridEntity::Draw(GameApp* app)
+//par Yvain
+void Entity::AddComponent(Component* c)
 {
-	int cellSize = 100;
-
-	SDL_SetRenderDrawColor(app->Renderer, 255, 255, 255, 255);
-
-	for (int y = 0; y < 5; y++)
+	components.push_back(c);
+}
+//par ia
+GridComponent::GridComponent()
+{
+	for(int y=0;y<5;y++)
+		for(int x=0;x<5;x++)
+			grid[y][x]=0;
+}
+//par ia
+void GridComponent::Render(GameApp* app)
+{
+	int size = 100;
+	for(int y=0;y<5;y++)
 		{
-			for (int x = 0; x < 5; x++)
+			for(int x=0;x<5;x++)
 				{
-					SDL_FRect rect = {
-						x * (float)cellSize,
-						y * (float)cellSize,
-						(float)cellSize,
-						(float)cellSize
+					SDL_FRect r = {
+						(float)(x*size),
+						(float)(y*size),
+						(float)size,
+						(float)size
 					};
-					SDL_RenderRect(app->Renderer, &rect);
+					SDL_SetRenderDrawColor(app->renderer,255,255,255,255);
+					SDL_RenderRect(app->renderer,&r);
+					if(grid[y][x]==1)
+						{
+							SDL_SetRenderDrawColor(app->renderer,0,255,0,255);
+							DrawCircle(app->renderer,
+								x*size + size/2,
+								y*size + size/2,
+								30);
+						}
+					if(grid[y][x]==2)
+						{
+							SDL_SetRenderDrawColor(app->renderer,200,200,200,255);
+							DrawCircle(app->renderer,
+								x*size + size/2,
+								y*size + size/2,
+								10);
+						}
 				}
 		}
 }

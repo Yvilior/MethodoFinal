@@ -1,42 +1,23 @@
-#ifndef ENTITY_MODULE_H
-#define ENTITY_MODULE_H
-
-#include "game.h"
-
+#ifndef ENTITY_H
+#define ENTITY_H
+#include <vector>
+#include "component.h"
+//par yvain
+class GameApp;
 class Entity
 {
 public:
-	Entity() = default;
-	virtual ~Entity();
-	virtual void Update(GameApp *app);
+	std::vector<Component*> components;
+	~Entity();
+	void Update(GameApp* app);
+	void Render(GameApp* app);
+	void AddComponent(Component* c);
 };
-
-class GridEntity : public Entity, public Drawable
+class GridComponent : public Component
 {
 public:
 	int grid[5][5];
-	GridEntity();
-	void Draw(GameApp* app) override;
+	GridComponent();
+	void Render(GameApp* app) override;
 };
-
-class Flower : public Entity, public Drawable
-{
-public:
-	float x = 0;
-	float y = 0;
-	float radius = 30;
-	Flower();
-	void Draw(GameApp* app) override;
-};
-
-class Seed : public Entity, public Drawable
-{
-public:
-	float x = 150;
-	float y = 150;
-	float radius = 15;
-	Seed();
-	void Draw(GameApp* app) override;
-};
-
 #endif

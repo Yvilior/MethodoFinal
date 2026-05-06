@@ -11,6 +11,8 @@ add_executable(${PROJECT_NAME}
 		src/entity.h
 		src/game.cpp
 		src/game.h
+		src/state.cpp
+		src/state.h
 		# Si vous ajoutez d'autres fichiers .cpp, il faut les lister ici:
 			   )
 
